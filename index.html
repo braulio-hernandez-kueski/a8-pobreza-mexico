@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pobreza en México 2008-2018 | Tablero CONEVAL</title>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<style>
+  :root {
+    --fondo: #f3f5f8;
+    --tarjeta: #ffffff;
+    --texto: #1f2a37;
+    --suave: #5b6675;
+    --pobreza: #e67e22;
+    --extrema: #b03a2e;
+    --azul: #1f5f8b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+  }
+  header {
+    background: linear-gradient(120deg, #17324d, var(--azul));
+    color: #fff;
+    padding: 28px 40px 24px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 0; opacity: .85; font-size: 14px; }
+  main { max-width: 1320px; margin: 0 auto; padding: 24px; }
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--tarjeta);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    border-top: 4px solid var(--pobreza);
+  }
+  .kpi.extrema { border-top-color: var(--extrema); }
+  .kpi .valor { font-size: 30px; font-weight: 700; }
+  .kpi .etiqueta { font-size: 13px; color: var(--suave); }
+  .kpi .cambio { font-size: 12px; color: var(--suave); margin-top: 4px; }
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .tarjeta {
+    background: var(--tarjeta);
+    border-radius: 10px;
+    padding: 18px 20px 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+  .tarjeta.ancha { grid-column: span 2; }
+  .tarjeta h2 { margin: 0; font-size: 16px; }
+  .tarjeta .sub { margin: 4px 0 8px; font-size: 12.5px; color: var(--suave); }
+  .grafico { width: 100%; height: 340px; }
+  .ancha .grafico { height: 460px; }
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--suave);
+    padding: 10px 24px 30px;
+  }
+  footer a { color: var(--azul); }
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .rejilla { grid-template-columns: 1fr; }
+    .tarjeta.ancha { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pobreza en México, 2008-2018</h1>
+  <p>Tablero elaborado con Google Charts a partir de la medición multidimensional de la pobreza de CONEVAL.</p>
+</header>
+
+<main>
+  <section class="kpis">
+    <div class="kpi">
+      <div class="valor">41.9%</div>
+      <div class="etiqueta">Población en pobreza, 2018</div>
+      <div class="cambio">44.4% en 2008 (−2.5 puntos)</div>
+    </div>
+    <div class="kpi">
+      <div class="valor">52.4 M</div>
+      <div class="etiqueta">Personas en pobreza, 2018</div>
+      <div class="cambio">49.5 M en 2008 (+2.9 M)</div>
+    </div>
+    <div class="kpi extrema">
+      <div class="valor">7.4%</div>
+      <div class="etiqueta">Población en pobreza extrema, 2018</div>
+      <div class="cambio">11.0% en 2008 (−3.6 puntos)</div>
+    </div>
+    <div class="kpi extrema">
+      <div class="valor">9.3 M</div>
+      <div class="etiqueta">Personas en pobreza extrema, 2018</div>
+      <div class="cambio">12.3 M en 2008 (−3.0 M)</div>
+    </div>
+  </section>
+
+  <section class="rejilla">
+    <article class="tarjeta">
+      <h2>1. Evolución del porcentaje de pobreza</h2>
+      <p class="sub">Porcentaje de la población nacional, 2008-2018.</p>
+      <div id="g_lineas" class="grafico"></div>
+    </article>
+
+    <article class="tarjeta">
+      <h2>2. Carencias sociales, 2008 frente a 2018</h2>
+      <p class="sub">Porcentaje de la población con cada carencia.</p>
+      <div id="g_barras" class="grafico"></div>
+    </article>
+
+    <article class="tarjeta ancha">
+      <h2>3. Pobreza por entidad federativa, 2018</h2>
+      <p class="sub">Porcentaje de la población en pobreza. Pasa el cursor sobre un estado para ver 2008 y 2018.</p>
+      <div id="g_mapa" class="grafico"></div>
+    </article>
+
+    <article class="tarjeta">
+      <h2>4. Brechas entre grupos de población</h2>
+      <p class="sub">Porcentaje en pobreza de cada grupo, 2008 y 2018.</p>
+      <div id="g_columnas" class="grafico"></div>
+    </article>
+
+    <article class="tarjeta">
+      <h2>5. Millones de personas en pobreza</h2>
+      <p class="sub">Pobreza extrema y moderada; la suma es el total en pobreza.</p>
+      <div id="g_area" class="grafico"></div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  Fuente: CONEVAL (2019). <a href="https://www.coneval.org.mx/SalaPrensa/Comunicadosprensa/Documents/2019/COMUNICADO_10_MEDICION_POBREZA_2008_2018.pdf" target="_blank">10 años de medición de pobreza en México, avances y retos en política social</a>.<br>
+  Elaboración: Guillermo Adrián Ramírez García, Braulio Sebastián Hernández Alcántara y Diego Tovar Ceja.
+</footer>
+
+<script>
+google.charts.load("current", {packages: ["corechart", "geochart"], language: "es"});
+google.charts.setOnLoadCallback(dibujar);
+
+var fuente = {fontName: "Arial", fontSize: 12};
+var graficos = [];
+
+function base(extra) {
+  var o = {
+    fontName: fuente.fontName,
+    fontSize: fuente.fontSize,
+    legend: {position: "top", alignment: "center"},
+    chartArea: {left: 60, right: 20, top: 40, bottom: 50},
+    animation: {startup: true, duration: 700, easing: "out"}
+  };
+  for (var k in extra) { o[k] = extra[k]; }
+  return o;
+}
+
+function dibujar() {
+  var lineas = google.visualization.arrayToDataTable([["Año", "Pobreza", {"type": "string", "role": "annotation"}, "Pobreza extrema", {"type": "string", "role": "annotation"}], ["2008", 44.4, "44.4", 11.0, "11.0"], ["2010", 46.1, "46.1", 11.3, "11.3"], ["2012", 45.5, "45.5", 9.8, "9.8"], ["2014", 46.2, "46.2", 9.5, "9.5"], ["2016", 43.6, "43.6", 7.6, "7.6"], ["2018", 41.9, "41.9", 7.4, "7.4"]]);
+  graficos.push([new google.visualization.LineChart(document.getElementById("g_lineas")), lineas, base({
+    colors: ["#e67e22", "#b03a2e"],
+    pointSize: 7,
+    lineWidth: 3,
+    vAxis: {title: "Porcentaje", minValue: 0, maxValue: 50, format: "#'%'"},
+    annotations: {stem: {length: 8, color: "transparent"}, textStyle: {fontSize: 11, color: "#333"}}
+  })]);
+
+  var barras = google.visualization.arrayToDataTable([["Carencia", "2008", {"type": "string", "role": "annotation"}, "2018", {"type": "string", "role": "annotation"}], ["Seguridad social", 65.0, "65.0", 57.3, "57.3"], ["Servicios de salud", 38.4, "38.4", 16.2, "16.2"], ["Servicios básicos en la vivienda", 22.9, "22.9", 19.8, "19.8"], ["Rezago educativo", 21.9, "21.9", 16.9, "16.9"], ["Alimentación", 21.7, "21.7", 20.4, "20.4"], ["Calidad y espacios de la vivienda", 17.7, "17.7", 11.1, "11.1"]]);
+  graficos.push([new google.visualization.BarChart(document.getElementById("g_barras")), barras, base({
+    colors: ["#b8c2cc", "#1f5f8b"],
+    chartArea: {left: 200, right: 20, top: 40, bottom: 40},
+    hAxis: {minValue: 0, maxValue: 75, format: "#'%'"},
+    bar: {groupWidth: "75%"},
+    annotations: {textStyle: {fontSize: 10, color: "#333"}}
+  })]);
+
+  var mapa = new google.visualization.DataTable();
+  mapa.addColumn("string", "Entidad");
+  mapa.addColumn("number", "Pobreza 2018 (%)");
+  mapa.addColumn({type: "string", role: "tooltip"});
+  mapa.addRows([[{"v": "MX-AGU", "f": "Aguascalientes"}, 26.2, "Aguascalientes\n2008: 37.6%  ·  2018: 26.2%"], [{"v": "MX-BCN", "f": "Baja California"}, 23.3, "Baja California\n2008: 26.0%  ·  2018: 23.3%"], [{"v": "MX-BCS", "f": "Baja California Sur"}, 18.1, "Baja California Sur\n2008: 21.4%  ·  2018: 18.1%"], [{"v": "MX-CAM", "f": "Campeche"}, 46.2, "Campeche\n2008: 45.9%  ·  2018: 46.2%"], [{"v": "MX-COA", "f": "Coahuila"}, 22.5, "Coahuila\n2008: 32.7%  ·  2018: 22.5%"], [{"v": "MX-COL", "f": "Colima"}, 30.9, "Colima\n2008: 27.4%  ·  2018: 30.9%"], [{"v": "MX-CHP", "f": "Chiapas"}, 76.4, "Chiapas\n2008: 77.0%  ·  2018: 76.4%"], [{"v": "MX-CHH", "f": "Chihuahua"}, 26.3, "Chihuahua\n2008: 32.1%  ·  2018: 26.3%"], [{"v": "MX-CMX", "f": "Ciudad de México"}, 30.6, "Ciudad de México\n2008: 27.6%  ·  2018: 30.6%"], [{"v": "MX-DUR", "f": "Durango"}, 37.3, "Durango\n2008: 48.4%  ·  2018: 37.3%"], [{"v": "MX-GUA", "f": "Guanajuato"}, 43.4, "Guanajuato\n2008: 44.1%  ·  2018: 43.4%"], [{"v": "MX-GRO", "f": "Guerrero"}, 66.5, "Guerrero\n2008: 68.4%  ·  2018: 66.5%"], [{"v": "MX-HID", "f": "Hidalgo"}, 43.8, "Hidalgo\n2008: 55.2%  ·  2018: 43.8%"], [{"v": "MX-JAL", "f": "Jalisco"}, 28.4, "Jalisco\n2008: 36.7%  ·  2018: 28.4%"], [{"v": "MX-MEX", "f": "México"}, 42.7, "México\n2008: 43.6%  ·  2018: 42.7%"], [{"v": "MX-MIC", "f": "Michoacán"}, 46.0, "Michoacán\n2008: 55.5%  ·  2018: 46.0%"], [{"v": "MX-MOR", "f": "Morelos"}, 50.8, "Morelos\n2008: 48.8%  ·  2018: 50.8%"], [{"v": "MX-NAY", "f": "Nayarit"}, 34.8, "Nayarit\n2008: 41.7%  ·  2018: 34.8%"], [{"v": "MX-NLE", "f": "Nuevo León"}, 14.5, "Nuevo León\n2008: 21.4%  ·  2018: 14.5%"], [{"v": "MX-OAX", "f": "Oaxaca"}, 66.4, "Oaxaca\n2008: 61.8%  ·  2018: 66.4%"], [{"v": "MX-PUE", "f": "Puebla"}, 58.9, "Puebla\n2008: 64.6%  ·  2018: 58.9%"], [{"v": "MX-QUE", "f": "Querétaro"}, 27.6, "Querétaro\n2008: 35.2%  ·  2018: 27.6%"], [{"v": "MX-ROO", "f": "Quintana Roo"}, 27.6, "Quintana Roo\n2008: 33.7%  ·  2018: 27.6%"], [{"v": "MX-SLP", "f": "San Luis Potosí"}, 43.4, "San Luis Potosí\n2008: 50.9%  ·  2018: 43.4%"], [{"v": "MX-SIN", "f": "Sinaloa"}, 30.9, "Sinaloa\n2008: 32.4%  ·  2018: 30.9%"], [{"v": "MX-SON", "f": "Sonora"}, 28.2, "Sonora\n2008: 27.1%  ·  2018: 28.2%"], [{"v": "MX-TAB", "f": "Tabasco"}, 53.6, "Tabasco\n2008: 53.8%  ·  2018: 53.6%"], [{"v": "MX-TAM", "f": "Tamaulipas"}, 35.1, "Tamaulipas\n2008: 33.8%  ·  2018: 35.1%"], [{"v": "MX-TLA", "f": "Tlaxcala"}, 48.4, "Tlaxcala\n2008: 59.6%  ·  2018: 48.4%"], [{"v": "MX-VER", "f": "Veracruz"}, 61.8, "Veracruz\n2008: 51.2%  ·  2018: 61.8%"], [{"v": "MX-YUC", "f": "Yucatán"}, 40.8, "Yucatán\n2008: 47.0%  ·  2018: 40.8%"], [{"v": "MX-ZAC", "f": "Zacatecas"}, 46.8, "Zacatecas\n2008: 50.1%  ·  2018: 46.8%"]]);
+  graficos.push([new google.visualization.GeoChart(document.getElementById("g_mapa")), mapa, {
+    region: "MX",
+    resolution: "provinces",
+    colorAxis: {colors: ["#fdf2d0", "#f0a04b", "#b03a2e", "#5e1914"], minValue: 10, maxValue: 80},
+    backgroundColor: "transparent",
+    datalessRegionColor: "#e5e5e5",
+    legend: {numberFormat: "#'%'"},
+    tooltip: {isHtml: false}
+  }]);
+
+  var columnas = google.visualization.arrayToDataTable([["Grupo", "2008", "2018"], ["Mujeres indígenas rurales", 83.0, 84.3], ["Hablantes de lengua indígena", 76.0, 74.9], ["Zonas rurales", 62.5, 55.3], ["Menores de 18 años", 53.3, 49.6], ["Adultos mayores (65+)", 44.9, 41.1], ["Mujeres", 44.6, 42.4], ["Hombres", 44.0, 41.4], ["No hablantes de lengua indígena", 41.4, 39.4], ["Zonas urbanas", 38.9, 37.6], ["Hombres no indígenas urbanos", 37.0, 35.8]]);
+  graficos.push([new google.visualization.ColumnChart(document.getElementById("g_columnas")), columnas, base({
+    colors: ["#b8c2cc", "#e67e22"],
+    chartArea: {left: 90, right: 15, top: 40, bottom: 120},
+    vAxis: {minValue: 0, maxValue: 90, format: "#'%'"},
+    hAxis: {slantedText: true, slantedTextAngle: 40, textStyle: {fontSize: 10.5}},
+    bar: {groupWidth: "75%"}
+  })]);
+
+  var area = google.visualization.arrayToDataTable([["Año", "Pobreza extrema", "Pobreza moderada", {"type": "string", "role": "annotation"}], ["2008", 12.3, 37.2, "Total 49.5"], ["2010", 13.0, 39.8, "Total 52.8"], ["2012", 11.5, 41.8, "Total 53.3"], ["2014", 11.4, 43.9, "Total 55.3"], ["2016", 9.4, 44.0, "Total 53.4"], ["2018", 9.3, 43.1, "Total 52.4"]]);
+  graficos.push([new google.visualization.AreaChart(document.getElementById("g_area")), area, base({
+    isStacked: true,
+    colors: ["#b03a2e", "#e67e22"],
+    areaOpacity: 0.75,
+    lineWidth: 2,
+    pointSize: 5,
+    chartArea: {left: 60, right: 30, top: 40, bottom: 50},
+    vAxis: {title: "Millones de personas", viewWindow: {min: 0, max: 65},
+            ticks: [0, 10, 20, 30, 40, 50, 60]},
+    annotations: {stem: {length: 6, color: "transparent"}, textStyle: {fontSize: 11, color: "#333"}}
+  })]);
+
+  pintar();
+}
+
+function pintar() {
+  graficos.forEach(function (g) { g[0].draw(g[1], g[2]); });
+}
+
+window.addEventListener("resize", function () {
+  clearTimeout(window._t);
+  window._t = setTimeout(pintar, 200);
+});
+</script>
+</body>
+</html>
