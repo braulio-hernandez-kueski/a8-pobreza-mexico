@@ -11,9 +11,11 @@
     --tarjeta: #ffffff;
     --texto: #1f2a37;
     --suave: #5b6675;
+    --linea: #e3e7ec;
     --pobreza: #e67e22;
     --extrema: #b03a2e;
     --azul: #1f5f8b;
+    --verde: #1e7b4f;
   }
   * { box-sizing: border-box; }
   body {
@@ -25,55 +27,169 @@
   header {
     background: linear-gradient(120deg, #17324d, var(--azul));
     color: #fff;
-    padding: 28px 40px 24px;
+    padding: 28px 40px 0;
   }
   header h1 { margin: 0 0 6px; font-size: 26px; }
   header p { margin: 0; opacity: .85; font-size: 14px; }
+  nav { display: flex; gap: 4px; margin-top: 20px; }
+  nav button {
+    background: transparent;
+    border: 0;
+    color: rgba(255,255,255,.75);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+  }
+  nav button:hover { color: #fff; }
+  nav button.activa { background: var(--fondo); color: var(--texto); }
   main { max-width: 1320px; margin: 0 auto; padding: 24px; }
+  .pestana { display: none; }
+  .pestana.visible { display: block; }
   .kpis {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 20px;
   }
-  .kpi {
+  .kpi, .tarjeta, .hallazgos, .definicion, .esquema {
     background: var(--tarjeta);
     border-radius: 10px;
-    padding: 16px 20px;
     box-shadow: 0 1px 4px rgba(0,0,0,.08);
-    border-top: 4px solid var(--pobreza);
   }
+  .kpi { padding: 16px 20px; border-top: 4px solid var(--pobreza); }
   .kpi.extrema { border-top-color: var(--extrema); }
   .kpi .valor { font-size: 30px; font-weight: 700; }
   .kpi .etiqueta { font-size: 13px; color: var(--suave); }
   .kpi .cambio { font-size: 12px; color: var(--suave); margin-top: 4px; }
+  .hallazgos { padding: 18px 22px; margin-bottom: 20px; }
+  .hallazgos h2 { margin: 0 0 12px; font-size: 16px; }
+  .hallazgos ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    counter-reset: h;
+  }
+  .hallazgos li {
+    counter-increment: h;
+    font-size: 13px;
+    line-height: 1.45;
+    padding-left: 34px;
+    position: relative;
+  }
+  .hallazgos li::before {
+    content: counter(h);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--azul);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hallazgos b { color: var(--extrema); }
   .rejilla {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-  .tarjeta {
-    background: var(--tarjeta);
-    border-radius: 10px;
-    padding: 18px 20px 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  }
+  .tarjeta { padding: 18px 20px 10px; }
   .tarjeta.ancha { grid-column: span 2; }
   .tarjeta h2 { margin: 0; font-size: 16px; }
   .tarjeta .sub { margin: 4px 0 8px; font-size: 12.5px; color: var(--suave); }
   .grafico { width: 100%; height: 340px; }
-  .ancha .grafico { height: 460px; }
+  #g_mapa { height: 460px; }
+  .controles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 4px;
+    font-size: 13px;
+  }
+  .segmentos { display: inline-flex; border: 1px solid #c9d1da; border-radius: 8px; overflow: hidden; }
+  .segmentos button, .reproducir {
+    border: 0;
+    background: #fff;
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: var(--texto);
+  }
+  .segmentos button + button { border-left: 1px solid #c9d1da; }
+  .segmentos button.activo { background: var(--azul); color: #fff; font-weight: 700; }
+  .reproducir { border: 1px solid #c9d1da; border-radius: 8px; }
+  .reproducir:hover, .segmentos button:hover:not(.activo) { background: #eef3f8; }
+  #f_tabla, #f_grupos { font-size: 13px; margin: 4px 0 8px; }
+  #f_tabla input {
+    padding: 6px 10px;
+    border: 1px solid #c9d1da;
+    border-radius: 6px;
+    font: inherit;
+    width: 220px;
+  }
+  #t_entidades { width: 100%; }
+  .google-visualization-table-table { width: 100%; font-family: Arial, sans-serif !important; font-size: 13px; }
+  .google-visualization-table-th { background: #eef2f6 !important; }
+  .ayuda { font-size: 12px; color: var(--suave); }
+  .intro-def { max-width: 900px; line-height: 1.55; font-size: 14.5px; margin: 0 0 20px; }
+  .esquema { padding: 20px 22px; margin-bottom: 20px; }
+  .esquema h2 { margin: 0 0 4px; font-size: 16px; }
+  .cuadrante {
+    display: grid;
+    grid-template-columns: 150px 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 13px;
+  }
+  .cuadrante .eje { color: var(--suave); font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; padding: 6px; }
+  .celda { border-radius: 8px; padding: 14px; min-height: 110px; }
+  .celda h4 { margin: 0 0 4px; font-size: 14px; }
+  .celda p { margin: 0; }
+  .c-vc { background: #fde9cc; }
+  .c-nn { background: #d8efe2; }
+  .c-pm { background: #f6c9a0; }
+  .c-vi { background: #fbe3d5; }
+  .c-pe { background: var(--extrema); color: #fff; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+  .definiciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .definicion { padding: 16px 18px; border-left: 4px solid var(--azul); }
+  .definicion h3 { margin: 0 0 6px; font-size: 15px; }
+  .definicion p { margin: 0; font-size: 13.5px; line-height: 1.5; }
+  .nota-def { font-size: 12.5px; color: var(--suave); margin-top: 16px; }
   footer {
     text-align: center;
     font-size: 12px;
     color: var(--suave);
     padding: 10px 24px 30px;
   }
-  footer a { color: var(--azul); }
-  @media (max-width: 900px) {
-    .kpis { grid-template-columns: repeat(2, 1fr); }
+  footer a, .nota-def a { color: var(--azul); }
+  @media (max-width: 1000px) {
+    .hallazgos ol { grid-template-columns: 1fr 1fr; }
+    .definiciones { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    header { padding: 22px 20px 0; }
+    .kpis, .hallazgos ol, .definiciones { grid-template-columns: 1fr; }
     .rejilla { grid-template-columns: 1fr; }
     .tarjeta.ancha { grid-column: span 1; }
+    .cuadrante { grid-template-columns: 90px 1fr 1fr; }
   }
 </style>
 </head>
@@ -81,9 +197,14 @@
 <header>
   <h1>Pobreza en México, 2008-2018</h1>
   <p>Tablero elaborado con Google Charts a partir de la medición multidimensional de la pobreza de CONEVAL.</p>
+  <nav>
+    <button type="button" data-pestana="tablero" class="activa">Tablero</button>
+    <button type="button" data-pestana="definiciones">Definiciones</button>
+  </nav>
 </header>
 
 <main>
+<section id="tablero" class="pestana visible">
   <section class="kpis">
     <div class="kpi">
       <div class="valor">41.9%</div>
@@ -107,6 +228,17 @@
     </div>
   </section>
 
+  <section class="hallazgos">
+    <h2>Hallazgos clave</h2>
+    <ol>
+      <li>La pobreza bajó en porcentaje, de 44.4% a 41.9%, pero <b>subió en personas</b>: de 49.5 a 52.4 millones.</li>
+      <li>La pobreza extrema pasó de 11.0% a 7.4%: <b>3 millones de personas menos</b> en esa situación.</li>
+      <li>El acceso a la salud fue la carencia que más mejoró (−22.2 puntos), pero <b>57.3% no tiene seguridad social</b>.</li>
+      <li>El sur concentra la pobreza: <b>Chiapas tiene 76.4%</b> y Nuevo León 14.5%. Veracruz subió 10.6 puntos.</li>
+      <li>Las mujeres indígenas rurales tienen 84.3% de pobreza, <b>el único grupo donde aumentó</b>.</li>
+    </ol>
+  </section>
+
   <section class="rejilla">
     <article class="tarjeta">
       <h2>1. Evolución del porcentaje de pobreza</h2>
@@ -121,15 +253,39 @@
     </article>
 
     <article class="tarjeta ancha">
-      <h2>3. Pobreza por entidad federativa, 2018</h2>
-      <p class="sub">Porcentaje de la población en pobreza. Pasa el cursor sobre un estado para ver 2008 y 2018.</p>
+      <h2>3. Pobreza por entidad federativa, <span id="t_anio">2018</span></h2>
+      <p class="sub">Porcentaje de la población en pobreza. Elige un año o reproduce la década; pasa el cursor sobre un estado para ver el cambio frente a 2008.</p>
+      <div class="controles">
+        <span class="segmentos" id="anios">
+        <button type="button" data-anio="0">2008</button>
+        <button type="button" data-anio="1">2010</button>
+        <button type="button" data-anio="2">2012</button>
+        <button type="button" data-anio="3">2014</button>
+        <button type="button" data-anio="4">2016</button>
+        <button type="button" data-anio="5" class="activo">2018</button>
+        </span>
+        <button type="button" class="reproducir" id="reproducir">▶ Reproducir 2008-2018</button>
+      </div>
       <div id="g_mapa" class="grafico"></div>
+    </article>
+
+    <article class="tarjeta ancha">
+      <h2>Detalle por entidad federativa, 2008-2018</h2>
+      <p class="sub">Haz clic en el encabezado de una columna para ordenar. El cambio está en puntos porcentuales: verde si bajó la pobreza, rojo si subió.</p>
+      <div id="d_tabla">
+        <div id="f_tabla"></div>
+        <div id="t_entidades"></div>
+      </div>
     </article>
 
     <article class="tarjeta">
       <h2>4. Brechas entre grupos de población</h2>
       <p class="sub">Porcentaje en pobreza de cada grupo, 2008 y 2018.</p>
-      <div id="g_columnas" class="grafico"></div>
+      <div id="d_grupos">
+        <div id="f_grupos"></div>
+        <div id="g_columnas" class="grafico"></div>
+      </div>
+      <p class="ayuda">Sin selección se muestran los diez grupos.</p>
     </article>
 
     <article class="tarjeta">
@@ -138,6 +294,43 @@
       <div id="g_area" class="grafico"></div>
     </article>
   </section>
+</section>
+
+<section id="definiciones" class="pestana">
+  <p class="intro-def">CONEVAL mide la pobreza con un enfoque <b>multidimensional</b>: no solo considera el ingreso, sino también el acceso a seis derechos sociales. Una persona es pobre cuando le falta ingreso <b>y</b> tiene al menos una carencia social. Estas son las definiciones que usa el tablero.</p>
+
+  <section class="esquema">
+    <h2>¿Cómo se clasifica a la población?</h2>
+    <p class="ayuda">La combinación de ingreso y carencias sociales divide a la población en cuatro grupos.</p>
+    <div class="cuadrante">
+      <div></div>
+      <div class="eje">Con una o más carencias sociales</div>
+      <div class="eje">Sin carencias sociales</div>
+      <div class="eje">Ingreso mayor a la línea de pobreza</div>
+      <div class="celda c-vc"><h4>Vulnerables por carencias sociales</h4><p>Tienen ingreso suficiente, pero les falta al menos un derecho social.</p></div>
+      <div class="celda c-nn"><h4>No pobres y no vulnerables</h4><p>Ingreso suficiente y ninguna carencia.</p></div>
+      <div class="eje">Ingreso menor a la línea de pobreza</div>
+      <div class="celda c-pm"><h4>Pobreza</h4><p>Ingreso insuficiente y al menos una carencia. Si no es extrema, es <b>pobreza moderada</b>.</p>
+        <div class="c-pe"><b>Pobreza extrema:</b> tres o más carencias e ingreso menor a la línea de pobreza extrema.</div></div>
+      <div class="celda c-vi"><h4>Vulnerables por ingresos</h4><p>Sin carencias, pero con ingreso insuficiente.</p></div>
+    </div>
+  </section>
+
+  <section class="definiciones">
+      <article class="definicion"><h3>Pobreza</h3><p>Una persona se encuentra en situación de pobreza cuando tiene al menos una carencia social (en los seis indicadores de rezago educativo, acceso a servicios de salud, acceso a la seguridad social, calidad y espacios de la vivienda, servicios básicos en la vivienda y acceso a la alimentación) y su ingreso es insuficiente para adquirir los bienes y servicios que requiere para satisfacer sus necesidades alimentarias y no alimentarias.</p></article>
+      <article class="definicion"><h3>Pobreza extrema</h3><p>Una persona se encuentra en situación de pobreza extrema cuando tiene tres o más carencias, de seis posibles, dentro del Índice de Privación Social y que, además, se encuentra por debajo de la línea de bienestar mínimo. Las personas en esta situación disponen de un ingreso tan bajo que, aun si lo dedicase por completo a la adquisición de alimentos, no podría adquirir los nutrientes necesarios para tener una vida sana.</p></article>
+      <article class="definicion"><h3>Pobreza moderada</h3><p>Es aquella persona que siendo pobre, no es pobre extrema. La incidencia de pobreza moderada se obtiene al calcular la diferencia entre la incidencia de la población en pobreza menos la de la población en pobreza extrema.</p></article>
+      <article class="definicion"><h3>Pobreza multidimensional</h3><p>La palabra multidimensional se refiere a que la metodología de medición de pobreza utiliza varias dimensiones o factores económicos y sociales en su concepción y definición.</p></article>
+      <article class="definicion"><h3>Vulnerables por carencias sociales</h3><p>Aquella población que presenta una o más carencias sociales, pero cuyo ingreso es superior a la línea de bienestar.</p></article>
+      <article class="definicion"><h3>Vulnerables por ingresos</h3><p>Aquella población que no presenta carencias sociales pero cuyo ingreso es inferior o igual a la línea de bienestar.</p></article>
+      <article class="definicion"><h3>No pobres y no vulnerables</h3><p>Aquella población cuyo ingreso es superior a la línea de bienestar y que no tiene ninguna de las carencias sociales que se utilizan en la medición de la pobreza.</p></article>
+      <article class="definicion"><h3>Índice de Privación Social</h3><p>Índice construido para cada persona a partir de la suma de los seis indicadores asociados a las carencias sociales. Es decir, es el número de carencias que tiene una persona.</p></article>
+      <article class="definicion"><h3>Línea de pobreza por ingresos</h3><p>Valor monetario de una canasta de alimentos, bienes y servicios básicos.</p></article>
+      <article class="definicion"><h3>Línea de pobreza extrema por ingresos</h3><p>Valor monetario de una canasta alimentaria básica.</p></article>
+      <article class="definicion"><h3>Zonas rurales y urbanas</h3><p>Rurales: localidades menores a 2 mil 500 habitantes. Urbanas: localidades con 2 mil 500 y más habitantes.</p></article>
+  </section>
+  <p class="nota-def">Las definiciones provienen del <a href="https://www.coneval.org.mx/Medicion/Paginas/Glosario.aspx" target="_blank">Glosario de la medición de la pobreza de CONEVAL</a>. La «línea de bienestar» y la «línea de bienestar mínimo» del glosario corresponden a la línea de pobreza por ingresos y a la línea de pobreza extrema por ingresos.</p>
+</section>
 </main>
 
 <footer>
@@ -146,69 +339,124 @@
 </footer>
 
 <script>
-google.charts.load("current", {packages: ["corechart", "geochart"], language: "es"});
-google.charts.setOnLoadCallback(dibujar);
+var ANIOS = [2008, 2010, 2012, 2014, 2016, 2018];
+var ENTIDADES = [{"cod": "MX-AGU", "nom": "Aguascalientes", "v": [37.6, 38.1, 37.8, 34.8, 28.2, 26.2]}, {"cod": "MX-BCN", "nom": "Baja California", "v": [26.0, 31.5, 30.2, 28.6, 22.2, 23.3]}, {"cod": "MX-BCS", "nom": "Baja California Sur", "v": [21.4, 31.0, 30.1, 30.3, 22.1, 18.1]}, {"cod": "MX-CAM", "nom": "Campeche", "v": [45.9, 50.5, 44.7, 43.6, 43.8, 46.2]}, {"cod": "MX-COA", "nom": "Coahuila", "v": [32.7, 27.8, 27.9, 30.2, 24.8, 22.5]}, {"cod": "MX-COL", "nom": "Colima", "v": [27.4, 34.7, 34.4, 34.3, 33.6, 30.9]}, {"cod": "MX-CHP", "nom": "Chiapas", "v": [77.0, 78.5, 74.7, 76.2, 77.1, 76.4]}, {"cod": "MX-CHH", "nom": "Chihuahua", "v": [32.1, 38.8, 35.3, 34.4, 30.6, 26.3]}, {"cod": "MX-CMX", "nom": "Ciudad de México", "v": [27.6, 28.5, 28.9, 28.4, 27.6, 30.6]}, {"cod": "MX-DUR", "nom": "Durango", "v": [48.4, 51.6, 50.1, 43.5, 36.0, 37.3]}, {"cod": "MX-GUA", "nom": "Guanajuato", "v": [44.1, 48.5, 44.5, 46.6, 42.4, 43.4]}, {"cod": "MX-GRO", "nom": "Guerrero", "v": [68.4, 67.6, 69.7, 65.2, 64.4, 66.5]}, {"cod": "MX-HID", "nom": "Hidalgo", "v": [55.2, 54.7, 52.8, 54.3, 50.6, 43.8]}, {"cod": "MX-JAL", "nom": "Jalisco", "v": [36.7, 37.0, 39.8, 35.4, 31.8, 28.4]}, {"cod": "MX-MEX", "nom": "México", "v": [43.6, 42.9, 45.3, 49.6, 47.9, 42.7]}, {"cod": "MX-MIC", "nom": "Michoacán", "v": [55.5, 54.7, 54.4, 59.2, 55.3, 46.0]}, {"cod": "MX-MOR", "nom": "Morelos", "v": [48.8, 43.2, 45.5, 52.3, 49.5, 50.8]}, {"cod": "MX-NAY", "nom": "Nayarit", "v": [41.7, 41.4, 47.6, 40.5, 37.5, 34.8]}, {"cod": "MX-NLE", "nom": "Nuevo León", "v": [21.4, 21.0, 23.2, 20.4, 14.2, 14.5]}, {"cod": "MX-OAX", "nom": "Oaxaca", "v": [61.8, 67.0, 61.9, 66.8, 70.4, 66.4]}, {"cod": "MX-PUE", "nom": "Puebla", "v": [64.6, 61.5, 64.5, 64.5, 59.4, 58.9]}, {"cod": "MX-QUE", "nom": "Querétaro", "v": [35.2, 41.4, 36.9, 34.2, 31.1, 27.6]}, {"cod": "MX-ROO", "nom": "Quintana Roo", "v": [33.7, 34.6, 38.8, 35.9, 28.8, 27.6]}, {"cod": "MX-SLP", "nom": "San Luis Potosí", "v": [50.9, 52.4, 50.5, 49.1, 45.5, 43.4]}, {"cod": "MX-SIN", "nom": "Sinaloa", "v": [32.4, 36.7, 36.3, 39.4, 30.8, 30.9]}, {"cod": "MX-SON", "nom": "Sonora", "v": [27.1, 33.1, 29.1, 29.4, 27.9, 28.2]}, {"cod": "MX-TAB", "nom": "Tabasco", "v": [53.8, 57.1, 49.7, 49.6, 50.9, 53.6]}, {"cod": "MX-TAM", "nom": "Tamaulipas", "v": [33.8, 39.0, 38.4, 37.9, 32.2, 35.1]}, {"cod": "MX-TLA", "nom": "Tlaxcala", "v": [59.6, 60.3, 57.9, 58.9, 53.9, 48.4]}, {"cod": "MX-VER", "nom": "Veracruz", "v": [51.2, 57.6, 52.6, 58.0, 62.2, 61.8]}, {"cod": "MX-YUC", "nom": "Yucatán", "v": [47.0, 48.3, 48.9, 45.9, 41.9, 40.8]}, {"cod": "MX-ZAC", "nom": "Zacatecas", "v": [50.1, 60.2, 54.2, 52.3, 49.0, 46.8]}];
 
-var fuente = {fontName: "Arial", fontSize: 12};
-var graficos = [];
+google.charts.load("current", {packages: ["corechart", "geochart", "table", "controls"], language: "es"});
+google.charts.setOnLoadCallback(iniciar);
+
+var dibujos = [];
+var anioMapa = ANIOS.length - 1;
+var mapa, opcionesMapa, temporizador;
 
 function base(extra) {
   var o = {
-    fontName: fuente.fontName,
-    fontSize: fuente.fontSize,
+    fontName: "Arial",
+    fontSize: 12,
     legend: {position: "top", alignment: "center"},
     chartArea: {left: 60, right: 20, top: 40, bottom: 50},
     animation: {startup: true, duration: 700, easing: "out"}
   };
-  for (var k in extra) { o[k] = extra[k]; }
+  for (var k in extra) {
+    if (extra[k] === null) { delete o[k]; } else { o[k] = extra[k]; }
+  }
   return o;
 }
 
-function dibujar() {
+function signo(v) { return (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1); }
+
+function iniciar() {
   var lineas = google.visualization.arrayToDataTable([["Año", "Pobreza", {"type": "string", "role": "annotation"}, "Pobreza extrema", {"type": "string", "role": "annotation"}], ["2008", 44.4, "44.4", 11.0, "11.0"], ["2010", 46.1, "46.1", 11.3, "11.3"], ["2012", 45.5, "45.5", 9.8, "9.8"], ["2014", 46.2, "46.2", 9.5, "9.5"], ["2016", 43.6, "43.6", 7.6, "7.6"], ["2018", 41.9, "41.9", 7.4, "7.4"]]);
-  graficos.push([new google.visualization.LineChart(document.getElementById("g_lineas")), lineas, base({
+  var gLineas = new google.visualization.LineChart(document.getElementById("g_lineas"));
+  var oLineas = base({
     colors: ["#e67e22", "#b03a2e"],
     pointSize: 7,
     lineWidth: 3,
     vAxis: {title: "Porcentaje", minValue: 0, maxValue: 50, format: "#'%'"},
     annotations: {stem: {length: 8, color: "transparent"}, textStyle: {fontSize: 11, color: "#333"}}
-  })]);
+  });
+  dibujos.push(function () { gLineas.draw(lineas, oLineas); });
 
   var barras = google.visualization.arrayToDataTable([["Carencia", "2008", {"type": "string", "role": "annotation"}, "2018", {"type": "string", "role": "annotation"}], ["Seguridad social", 65.0, "65.0", 57.3, "57.3"], ["Servicios de salud", 38.4, "38.4", 16.2, "16.2"], ["Servicios básicos en la vivienda", 22.9, "22.9", 19.8, "19.8"], ["Rezago educativo", 21.9, "21.9", 16.9, "16.9"], ["Alimentación", 21.7, "21.7", 20.4, "20.4"], ["Calidad y espacios de la vivienda", 17.7, "17.7", 11.1, "11.1"]]);
-  graficos.push([new google.visualization.BarChart(document.getElementById("g_barras")), barras, base({
+  var gBarras = new google.visualization.BarChart(document.getElementById("g_barras"));
+  var oBarras = base({
     colors: ["#b8c2cc", "#1f5f8b"],
     chartArea: {left: 200, right: 20, top: 40, bottom: 40},
     hAxis: {minValue: 0, maxValue: 75, format: "#'%'"},
     bar: {groupWidth: "75%"},
     annotations: {textStyle: {fontSize: 10, color: "#333"}}
-  })]);
+  });
+  dibujos.push(function () { gBarras.draw(barras, oBarras); });
 
-  var mapa = new google.visualization.DataTable();
-  mapa.addColumn("string", "Entidad");
-  mapa.addColumn("number", "Pobreza 2018 (%)");
-  mapa.addColumn({type: "string", role: "tooltip"});
-  mapa.addRows([[{"v": "MX-AGU", "f": "Aguascalientes"}, 26.2, "Aguascalientes\n2008: 37.6%  ·  2018: 26.2%"], [{"v": "MX-BCN", "f": "Baja California"}, 23.3, "Baja California\n2008: 26.0%  ·  2018: 23.3%"], [{"v": "MX-BCS", "f": "Baja California Sur"}, 18.1, "Baja California Sur\n2008: 21.4%  ·  2018: 18.1%"], [{"v": "MX-CAM", "f": "Campeche"}, 46.2, "Campeche\n2008: 45.9%  ·  2018: 46.2%"], [{"v": "MX-COA", "f": "Coahuila"}, 22.5, "Coahuila\n2008: 32.7%  ·  2018: 22.5%"], [{"v": "MX-COL", "f": "Colima"}, 30.9, "Colima\n2008: 27.4%  ·  2018: 30.9%"], [{"v": "MX-CHP", "f": "Chiapas"}, 76.4, "Chiapas\n2008: 77.0%  ·  2018: 76.4%"], [{"v": "MX-CHH", "f": "Chihuahua"}, 26.3, "Chihuahua\n2008: 32.1%  ·  2018: 26.3%"], [{"v": "MX-CMX", "f": "Ciudad de México"}, 30.6, "Ciudad de México\n2008: 27.6%  ·  2018: 30.6%"], [{"v": "MX-DUR", "f": "Durango"}, 37.3, "Durango\n2008: 48.4%  ·  2018: 37.3%"], [{"v": "MX-GUA", "f": "Guanajuato"}, 43.4, "Guanajuato\n2008: 44.1%  ·  2018: 43.4%"], [{"v": "MX-GRO", "f": "Guerrero"}, 66.5, "Guerrero\n2008: 68.4%  ·  2018: 66.5%"], [{"v": "MX-HID", "f": "Hidalgo"}, 43.8, "Hidalgo\n2008: 55.2%  ·  2018: 43.8%"], [{"v": "MX-JAL", "f": "Jalisco"}, 28.4, "Jalisco\n2008: 36.7%  ·  2018: 28.4%"], [{"v": "MX-MEX", "f": "México"}, 42.7, "México\n2008: 43.6%  ·  2018: 42.7%"], [{"v": "MX-MIC", "f": "Michoacán"}, 46.0, "Michoacán\n2008: 55.5%  ·  2018: 46.0%"], [{"v": "MX-MOR", "f": "Morelos"}, 50.8, "Morelos\n2008: 48.8%  ·  2018: 50.8%"], [{"v": "MX-NAY", "f": "Nayarit"}, 34.8, "Nayarit\n2008: 41.7%  ·  2018: 34.8%"], [{"v": "MX-NLE", "f": "Nuevo León"}, 14.5, "Nuevo León\n2008: 21.4%  ·  2018: 14.5%"], [{"v": "MX-OAX", "f": "Oaxaca"}, 66.4, "Oaxaca\n2008: 61.8%  ·  2018: 66.4%"], [{"v": "MX-PUE", "f": "Puebla"}, 58.9, "Puebla\n2008: 64.6%  ·  2018: 58.9%"], [{"v": "MX-QUE", "f": "Querétaro"}, 27.6, "Querétaro\n2008: 35.2%  ·  2018: 27.6%"], [{"v": "MX-ROO", "f": "Quintana Roo"}, 27.6, "Quintana Roo\n2008: 33.7%  ·  2018: 27.6%"], [{"v": "MX-SLP", "f": "San Luis Potosí"}, 43.4, "San Luis Potosí\n2008: 50.9%  ·  2018: 43.4%"], [{"v": "MX-SIN", "f": "Sinaloa"}, 30.9, "Sinaloa\n2008: 32.4%  ·  2018: 30.9%"], [{"v": "MX-SON", "f": "Sonora"}, 28.2, "Sonora\n2008: 27.1%  ·  2018: 28.2%"], [{"v": "MX-TAB", "f": "Tabasco"}, 53.6, "Tabasco\n2008: 53.8%  ·  2018: 53.6%"], [{"v": "MX-TAM", "f": "Tamaulipas"}, 35.1, "Tamaulipas\n2008: 33.8%  ·  2018: 35.1%"], [{"v": "MX-TLA", "f": "Tlaxcala"}, 48.4, "Tlaxcala\n2008: 59.6%  ·  2018: 48.4%"], [{"v": "MX-VER", "f": "Veracruz"}, 61.8, "Veracruz\n2008: 51.2%  ·  2018: 61.8%"], [{"v": "MX-YUC", "f": "Yucatán"}, 40.8, "Yucatán\n2008: 47.0%  ·  2018: 40.8%"], [{"v": "MX-ZAC", "f": "Zacatecas"}, 46.8, "Zacatecas\n2008: 50.1%  ·  2018: 46.8%"]]);
-  graficos.push([new google.visualization.GeoChart(document.getElementById("g_mapa")), mapa, {
+  mapa = new google.visualization.GeoChart(document.getElementById("g_mapa"));
+  opcionesMapa = {
     region: "MX",
     resolution: "provinces",
     colorAxis: {colors: ["#fdf2d0", "#f0a04b", "#b03a2e", "#5e1914"], minValue: 10, maxValue: 80},
     backgroundColor: "transparent",
     datalessRegionColor: "#e5e5e5",
-    legend: {numberFormat: "#'%'"},
-    tooltip: {isHtml: false}
-  }]);
+    legend: {numberFormat: "#'%'"}
+  };
+  dibujos.push(dibujarMapa);
+
+  var tabla = new google.visualization.DataTable();
+  tabla.addColumn("string", "Entidad federativa");
+  ANIOS.forEach(function (a) { tabla.addColumn("number", String(a)); });
+  tabla.addColumn("number", "Cambio 2008-2018");
+  ENTIDADES.forEach(function (e) {
+    var cambio = Math.round((e.v[5] - e.v[0]) * 10) / 10;
+    var fila = [e.nom].concat(e.v.map(function (v) { return {v: v, f: v.toFixed(1)}; }));
+    tabla.addRow(fila.concat([{v: cambio, f: signo(cambio)}]));
+  });
+  var colCambio = ANIOS.length + 1;
+  var colores = new google.visualization.ColorFormat();
+  colores.addRange(null, 0, "#1e7b4f", "#e3f3ea");
+  colores.addRange(0.01, null, "#b03a2e", "#f8e1de");
+  colores.format(tabla, colCambio);
+  var dTabla = new google.visualization.Dashboard(document.getElementById("d_tabla"));
+  var fTabla = new google.visualization.ControlWrapper({
+    controlType: "StringFilter",
+    containerId: "f_tabla",
+    options: {filterColumnIndex: 0, matchType: "any", ui: {label: "Buscar entidad: ", labelSeparator: ""}}
+  });
+  var tTabla = new google.visualization.ChartWrapper({
+    chartType: "Table",
+    containerId: "t_entidades",
+    options: {allowHtml: true, sortColumn: ANIOS.length, sortAscending: false, width: "100%", page: "disable"}
+  });
+  dTabla.bind(fTabla, tTabla);
+  dibujos.push(function () { dTabla.draw(tabla); });
 
   var columnas = google.visualization.arrayToDataTable([["Grupo", "2008", "2018"], ["Mujeres indígenas rurales", 83.0, 84.3], ["Hablantes de lengua indígena", 76.0, 74.9], ["Zonas rurales", 62.5, 55.3], ["Menores de 18 años", 53.3, 49.6], ["Adultos mayores (65+)", 44.9, 41.1], ["Mujeres", 44.6, 42.4], ["Hombres", 44.0, 41.4], ["No hablantes de lengua indígena", 41.4, 39.4], ["Zonas urbanas", 38.9, 37.6], ["Hombres no indígenas urbanos", 37.0, 35.8]]);
-  graficos.push([new google.visualization.ColumnChart(document.getElementById("g_columnas")), columnas, base({
-    colors: ["#b8c2cc", "#e67e22"],
-    chartArea: {left: 90, right: 15, top: 40, bottom: 120},
-    vAxis: {minValue: 0, maxValue: 90, format: "#'%'"},
-    hAxis: {slantedText: true, slantedTextAngle: 40, textStyle: {fontSize: 10.5}},
-    bar: {groupWidth: "75%"}
-  })]);
+  var dGrupos = new google.visualization.Dashboard(document.getElementById("d_grupos"));
+  var fGrupos = new google.visualization.ControlWrapper({
+    controlType: "CategoryFilter",
+    containerId: "f_grupos",
+    options: {
+      filterColumnIndex: 0,
+      ui: {label: "Comparar grupos: ", labelSeparator: "", caption: "Elige uno o más grupos…",
+           allowTyping: false, allowMultiple: true, selectedValuesLayout: "belowWrapping",
+           sortValues: false}
+    }
+  });
+  var gColumnas = new google.visualization.ChartWrapper({
+    chartType: "ColumnChart",
+    containerId: "g_columnas",
+    options: base({
+      colors: ["#b8c2cc", "#e67e22"],
+      chartArea: {left: 90, right: 15, top: 40, bottom: 120},
+      vAxis: {viewWindow: {min: 0, max: 100}, format: "#'%'"},
+      hAxis: {slantedText: true, slantedTextAngle: 40, textStyle: {fontSize: 10.5}},
+      bar: {groupWidth: "75%"},
+      animation: null
+    })
+  });
+  dGrupos.bind(fGrupos, gColumnas);
+  dibujos.push(function () { dGrupos.draw(columnas); });
 
   var area = google.visualization.arrayToDataTable([["Año", "Pobreza extrema", "Pobreza moderada", {"type": "string", "role": "annotation"}], ["2008", 12.3, 37.2, "Total 49.5"], ["2010", 13.0, 39.8, "Total 52.8"], ["2012", 11.5, 41.8, "Total 53.3"], ["2014", 11.4, 43.9, "Total 55.3"], ["2016", 9.4, 44.0, "Total 53.4"], ["2018", 9.3, 43.1, "Total 52.4"]]);
-  graficos.push([new google.visualization.AreaChart(document.getElementById("g_area")), area, base({
+  var gArea = new google.visualization.AreaChart(document.getElementById("g_area"));
+  var oArea = base({
     isStacked: true,
     colors: ["#b03a2e", "#e67e22"],
     areaOpacity: 0.75,
@@ -218,14 +466,74 @@ function dibujar() {
     vAxis: {title: "Millones de personas", viewWindow: {min: 0, max: 65},
             ticks: [0, 10, 20, 30, 40, 50, 60]},
     annotations: {stem: {length: 6, color: "transparent"}, textStyle: {fontSize: 11, color: "#333"}}
-  })]);
+  });
+  dibujos.push(function () { gArea.draw(area, oArea); });
+
+  document.querySelectorAll("#anios button").forEach(function (b) {
+    b.addEventListener("click", function () { detener(); elegirAnio(+b.dataset.anio); });
+  });
+  document.getElementById("reproducir").addEventListener("click", reproducir);
 
   pintar();
 }
 
-function pintar() {
-  graficos.forEach(function (g) { g[0].draw(g[1], g[2]); });
+function dibujarMapa() {
+  var i = anioMapa;
+  var datos = new google.visualization.DataTable();
+  datos.addColumn("string", "Entidad");
+  datos.addColumn("number", "Pobreza " + ANIOS[i] + " (%)");
+  datos.addColumn({type: "string", role: "tooltip"});
+  ENTIDADES.forEach(function (e) {
+    var texto = e.nom + "\n" + ANIOS[i] + ": " + e.v[i].toFixed(1) + "%";
+    if (i > 0) { texto += "\nCambio frente a 2008: " + signo(e.v[i] - e.v[0]) + " puntos"; }
+    datos.addRow([{v: e.cod, f: e.nom}, e.v[i], texto]);
+  });
+  mapa.draw(datos, opcionesMapa);
 }
+
+function elegirAnio(i) {
+  anioMapa = i;
+  document.getElementById("t_anio").textContent = ANIOS[i];
+  document.querySelectorAll("#anios button").forEach(function (b) {
+    b.classList.toggle("activo", +b.dataset.anio === i);
+  });
+  dibujarMapa();
+}
+
+function reproducir() {
+  if (temporizador) { detener(); return; }
+  var i = 0;
+  elegirAnio(i);
+  document.getElementById("reproducir").textContent = "■ Detener";
+  temporizador = setInterval(function () {
+    i += 1;
+    if (i >= ANIOS.length) { detener(); return; }
+    elegirAnio(i);
+  }, 1300);
+}
+
+function detener() {
+  clearInterval(temporizador);
+  temporizador = null;
+  document.getElementById("reproducir").textContent = "▶ Reproducir 2008-2018";
+}
+
+function pintar() {
+  if (!document.getElementById("tablero").classList.contains("visible")) { return; }
+  dibujos.forEach(function (f) { f(); });
+}
+
+function mostrar(id) {
+  document.querySelectorAll(".pestana").forEach(function (p) { p.classList.toggle("visible", p.id === id); });
+  document.querySelectorAll("nav button").forEach(function (b) { b.classList.toggle("activa", b.dataset.pestana === id); });
+  if (id === "tablero" && dibujos.length) { pintar(); }
+  history.replaceState(null, "", id === "tablero" ? location.pathname : "#" + id);
+}
+
+document.querySelectorAll("nav button").forEach(function (b) {
+  b.addEventListener("click", function () { mostrar(b.dataset.pestana); });
+});
+if (location.hash === "#definiciones") { mostrar("definiciones"); }
 
 window.addEventListener("resize", function () {
   clearTimeout(window._t);
